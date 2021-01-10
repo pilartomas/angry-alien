@@ -14,7 +14,7 @@ private:
     Display lcd;
     Engine engine;
 
-    void action();
+    void wait();
     void render();
     void showScore();
     void renderState();

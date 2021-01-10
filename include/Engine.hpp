@@ -40,7 +40,9 @@ struct Engine
     unsigned int score;
 
 private:
-    void locateAgent(size_t &agentX, size_t &agentY);
+    const unsigned int SPIKE_AVG_FREQENCY = 7;
 
+    void locateAgent(size_t &agentX, size_t &agentY);
     void moveAgentTo(size_t x, size_t y);
+    void generateStateTail();
 };
