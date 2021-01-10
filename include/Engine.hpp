@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 enum Status
 {
     RUNNING,
@@ -29,8 +31,8 @@ struct Engine
 
     void togglePause();
 
-    static const unsigned int WIDTH = 16;
-    static const unsigned int HEIGHT = 2;
+    static const size_t WIDTH = 16;
+    static const size_t HEIGHT = 2;
 
     LocationType state[HEIGHT][WIDTH];
 
@@ -38,7 +40,7 @@ struct Engine
     unsigned int score;
 
 private:
-    void locateAgent(unsigned int &agentX, unsigned int &agentY);
+    void locateAgent(size_t &agentX, size_t &agentY);
 
-    void moveAgentTo(unsigned int x, unsigned int y);
+    void moveAgentTo(size_t x, size_t y);
 };

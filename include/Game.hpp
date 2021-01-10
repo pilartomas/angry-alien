@@ -8,6 +8,8 @@ public:
     void run();
 
 private:
+    unsigned int INTERVAL_MILLIS = 500;
+
     Joystick joystick;
     Display lcd;
     Engine engine;
