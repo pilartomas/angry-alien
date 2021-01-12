@@ -26,10 +26,8 @@ struct Engine
     Engine();
 
     void step(Move move);
-
     void reset();
-
-    void togglePause();
+    void toggleStatus();
 
     static const size_t WIDTH = 16;
     static const size_t HEIGHT = 2;
@@ -42,7 +40,14 @@ struct Engine
 private:
     const unsigned int SPIKE_AVG_FREQENCY = 7;
 
-    void locateAgent(size_t &agentX, size_t &agentY);
+    struct Agent
+    {
+        size_t x;
+        size_t y;
+    };
+
+    Agent getAgent() const;
     void moveAgentTo(size_t x, size_t y);
     void generateStateTail();
+    void shiftState();
 };
