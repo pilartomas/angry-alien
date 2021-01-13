@@ -7,7 +7,7 @@ Engine::Engine()
     reset();
 }
 
-void Engine::step(Move move)
+void Engine::action(Move move)
 {
     if (status != RUNNING)
         return;
@@ -31,9 +31,14 @@ void Engine::step(Move move)
         if (agent.y < HEIGHT - 1)
             moveAgentTo(agent.x, agent.y + 1);
         break;
-    case WAIT:
-        break;
     }
+}
+
+void Engine::step()
+{
+    if (status != RUNNING)
+        return;
+
     score++;
 
     shiftState();
@@ -57,7 +62,7 @@ void Engine::shiftState()
 
 void Engine::reset()
 {
-    status = PAUSED;
+    status = RUNNING;
     score = 0;
     for (size_t j = 0; j < HEIGHT; ++j)
     {
@@ -66,23 +71,7 @@ void Engine::reset()
             state[j][i] = EMPTY;
         }
     }
-    state[1][3] = AGENT;
-}
-
-void Engine::toggleStatus()
-{
-    switch (status)
-    {
-    case PAUSED:
-        status = RUNNING;
-        break;
-    case RUNNING:
-        status = PAUSED;
-        break;
-    case FINISHED:
-        reset();
-        break;
-    }
+    state[1][0] = AGENT;
 }
 
 Engine::Agent Engine::getAgent() const

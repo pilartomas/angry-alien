@@ -5,41 +5,43 @@
 
 void Game::run()
 {
-    wait();
-    render();
+    while (true)
+    {
+        acceptActions();
+        forwardGame();
+    }
 }
 
-// Actively waits INTERVAL_MILLIS but also listens to an action
-void Game::wait()
+#define ACTION_PAUSE_MILLIS 100
+
+void Game::acceptActions()
 {
-    auto countdown = INTERVAL_MILLIS;
+    auto countdown = INTERVAL_MILLIS / ACTION_PAUSE_MILLIS;
     while (countdown > 0)
     {
-        _delay_ms(1);
+        _delay_ms(ACTION_PAUSE_MILLIS);
         countdown--;
         // joystick can be in many states but we want only one action
-        if (joystick.isPressed())
-            engine.toggleStatus();
+        if (joystick.isPressed() && engine.status != RUNNING)
+            engine.reset();
         else if (joystick.isUp())
-            engine.step(UP);
+            engine.action(UP);
         else if (joystick.isDown())
-            engine.step(DOWN);
+            engine.action(DOWN);
         else if (joystick.isLeft())
-            engine.step(LEFT);
+            engine.action(LEFT);
         else if (joystick.isRight())
-            engine.step(RIGHT);
+            engine.action(RIGHT);
         else
             continue;
-        break;
+        render(); // some action have been taken, need to re-render
     }
-    if (countdown == 0)
-        engine.step(WAIT);
-    // if we broke due to an action, wait out the rest
-    while (countdown > 0)
-    {
-        _delay_ms(1);
-        countdown--;
-    }
+}
+
+void Game::forwardGame()
+{
+    engine.step();
+    render();
 }
 
 void Game::render()

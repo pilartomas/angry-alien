@@ -3,7 +3,6 @@
 enum Status
 {
     RUNNING,
-    PAUSED,
     FINISHED
 };
 enum LocationType
@@ -17,17 +16,16 @@ enum Move
     LEFT,
     RIGHT,
     UP,
-    DOWN,
-    WAIT
+    DOWN
 };
 
 struct Engine
 {
     Engine();
 
-    void step(Move move);
+    void action(Move move);
+    void step();
     void reset();
-    void toggleStatus();
 
     static const size_t WIDTH = 16;
     static const size_t HEIGHT = 2;

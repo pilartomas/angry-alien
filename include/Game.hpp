@@ -14,7 +14,9 @@ private:
     Display lcd;
     Engine engine;
 
-    void wait();
+    void acceptActions();
+    void forwardGame();
+
     void render();
     void showScore();
     void renderState();
