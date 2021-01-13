@@ -109,11 +109,25 @@ void Engine::generateStateTail()
     state[1][WIDTH - 1] = EMPTY;
 
     auto r = rand();
+    auto type = r < RAND_MAX / 3 ? DEATH : SPIKE;
     if (r % SPIKE_AVG_FREQENCY == 0)
     {
-        if (r < RAND_MAX / 2 && state[1][WIDTH - 2] != SPIKE) //also make sure it's not a death trap
-            state[0][WIDTH - 1] = SPIKE;
-        else if (state[0][WIDTH - 2] != SPIKE)
-            state[1][WIDTH - 1] = SPIKE;
+        if (r < RAND_MAX / 2 && !isThreat(state[1][WIDTH - 2])) //also make sure it's not a death trap
+            state[0][WIDTH - 1] = type;
+        else if (!isThreat(state[0][WIDTH - 2]))
+            state[1][WIDTH - 1] = type;
+    }
+}
+
+bool Engine::isThreat(const LocationType type)
+{
+    switch (type)
+    {
+    case DEATH:
+        return true;
+    case SPIKE:
+        return true;
+    default:
+        return false;
     }
 }

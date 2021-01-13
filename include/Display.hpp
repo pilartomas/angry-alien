@@ -26,7 +26,10 @@ enum Line
 
 enum Image
 {
-    ALIEN = 0
+    ALIEN = 0,
+    DOWNWARD_SPIKE = 1,
+    UPWARD_SPIKE = 2,
+    SKULL = 3
 };
 
 struct Display
@@ -35,13 +38,9 @@ public:
     Display();
 
     void write(unsigned char c);
-
     void write(Image image);
-
     void print(const char *c);
-
     void clear();
-
     void start(Line line);
 
 private:
@@ -55,11 +54,41 @@ private:
         0b11011,
         0b00000};
 
+    const uint8_t Spike[8] = {
+        0b00000,
+        0b00100,
+        0b01110,
+        0b01110,
+        0b11111,
+        0b11111,
+        0b11111,
+        0b11111};
+
+    const uint8_t ReverseSpike[8] = {
+        0b11111,
+        0b11111,
+        0b11111,
+        0b11111,
+        0b01110,
+        0b01110,
+        0b00100,
+        0b00000};
+
+    const uint8_t Skull[8] = {
+        0b00000,
+        0b01110,
+        0b10101,
+        0b11011,
+        0b01110,
+        0b01110,
+        0b00000,
+        0b00000
+};
+
+    void loadImages();
+    void loadImage(const Image image, const uint8_t imageData[]);
     void enable();
-
     void writeNibble(uint8_t nibble);
-
     void writeCommand(uint8_t command);
-
     void writeMemory(uint8_t data);
 };

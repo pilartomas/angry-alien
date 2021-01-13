@@ -9,7 +9,8 @@ enum LocationType
 {
     EMPTY,
     AGENT,
-    SPIKE
+    SPIKE,
+    DEATH
 };
 enum Move
 {
@@ -48,4 +49,5 @@ private:
     void moveAgentTo(size_t x, size_t y);
     void generateStateTail();
     void shiftState();
+    static bool isThreat(const LocationType type);
 };

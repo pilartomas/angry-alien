@@ -2,6 +2,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <stdlib.h>
 
 Display::Display()
 {
@@ -23,14 +24,30 @@ Display::Display()
     writeCommand(0b00000110);
 
     // init images
-    //    byte loc = 0;
-    //    loc &= 0x7;
-    //    writeCommand(CMD_SETCGRAMADDR);
-    //    for (unsigned int i = 0; i < 8; ++i) {
-    //      write(Alien[i]);
-    //    }
+    _delay_us(4500);
+    loadImages();
 
     start(FIRST);
+}
+
+void Display::loadImages()
+{
+    loadImage(ALIEN, Alien);
+    loadImage(DOWNWARD_SPIKE, ReverseSpike);
+    loadImage(UPWARD_SPIKE, Spike);
+    loadImage(SKULL, Skull);
+}
+
+void Display::loadImage(const Image image, const uint8_t imageData[])
+{
+    uint8_t location = image;
+    location &= 0x7;
+    writeCommand(CMD_SETCGRAMADDR | (location << 3));
+    for (size_t i = 0; i < 8; ++i)
+    {
+        writeMemory(imageData[i]);
+        _delay_us(4500);
+    }
 }
 
 void Display::write(unsigned char c)

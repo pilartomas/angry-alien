@@ -20,4 +20,5 @@ private:
     void render();
     void showScore();
     void renderState();
+    void renderRow(const Line row);
 };

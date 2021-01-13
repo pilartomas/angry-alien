@@ -71,24 +71,32 @@ void Game::showScore()
 void Game::renderState()
 {
     lcd.clear();
-    for (size_t j = 0; j < engine.HEIGHT; ++j)
+    renderRow(FIRST);
+    renderRow(SECOND);
+}
+
+void Game::renderRow(const Line row)
+{
+    lcd.start(row);
+    for (size_t i = 0; i < engine.WIDTH; ++i)
     {
-        if (j == 1)
-            lcd.start(SECOND);
-        for (size_t i = 0; i < engine.WIDTH; ++i)
+        switch (engine.state[row == FIRST ? 0 : 1][i])
         {
-            switch (engine.state[j][i])
-            {
-            case AGENT:
-                lcd.write('A');
-                break;
-            case SPIKE:
-                lcd.write('S');
-                break;
-            case EMPTY:
-                lcd.write(' ');
-                break;
-            }
+        case AGENT:
+            lcd.write(ALIEN);
+            break;
+        case SPIKE:
+            if (row == FIRST)
+                lcd.write(DOWNWARD_SPIKE);
+            else
+                lcd.write(UPWARD_SPIKE);
+            break;
+        case DEATH:
+            lcd.write(SKULL);
+            break;
+        case EMPTY:
+            lcd.write(' ');
+            break;
         }
     }
 }
