@@ -2,7 +2,7 @@
 
 #include <avr/io.h>
 
-Joystick::Joystick()
+Joystick::Joystick(const unsigned int sensitivity) : invertedSensitivity(sensitivity - 250)
 {
     DDRB &= ~(1 << DDB0);
     ADMUX |= (1 << REFS0);
@@ -27,7 +27,7 @@ bool Joystick::isUp() const
     auto y = getY();
     if (y < IDLE_VALUE)
         return false;
-    return y - IDLE_VALUE > DIFF_TRESHOLD;
+    return y - IDLE_VALUE > invertedSensitivity;
 }
 
 bool Joystick::isDown() const
@@ -35,7 +35,7 @@ bool Joystick::isDown() const
     auto y = getY();
     if (y > IDLE_VALUE)
         return false;
-    return IDLE_VALUE - y > DIFF_TRESHOLD;
+    return IDLE_VALUE - y > invertedSensitivity;
 }
 
 bool Joystick::isLeft() const
@@ -43,7 +43,7 @@ bool Joystick::isLeft() const
     auto x = getX();
     if (x > IDLE_VALUE)
         return false;
-    return IDLE_VALUE - x > DIFF_TRESHOLD;
+    return IDLE_VALUE - x > invertedSensitivity;
 }
 
 bool Joystick::isRight() const
@@ -51,7 +51,7 @@ bool Joystick::isRight() const
     auto x = getX();
     if (x < IDLE_VALUE)
         return false;
-    return x - IDLE_VALUE > DIFF_TRESHOLD;
+    return x - IDLE_VALUE > invertedSensitivity;
 }
 
 bool Joystick::isPressed() const

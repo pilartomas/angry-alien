@@ -5,6 +5,8 @@
 #define HEIGHT 2
 #define WIDTH 16
 
+#define JOYSTICK_SENSITIVITY 250
+
 struct Game
 {
 public:
@@ -13,7 +15,7 @@ public:
 private:
     unsigned int INTERVAL_MILLIS = 500;
 
-    Joystick joystick;
+    Joystick joystick{JOYSTICK_SENSITIVITY};
     Display lcd;
     Engine<HEIGHT, WIDTH> engine;
 

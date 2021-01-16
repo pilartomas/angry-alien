@@ -1,3 +1,5 @@
+#define IDLE_VALUE 512
+
 /*
  * Controls joystick with horizontal X axis, vertical Y axis and a button
  * 
@@ -8,7 +10,10 @@
 class Joystick
 {
 public:
-    Joystick();
+    /*
+     * sensitivity - number between 0 and 1024 (excluded)
+     */
+    Joystick(const unsigned int sensitivity);
 
     bool isUp() const;
     bool isDown() const;
@@ -18,8 +23,7 @@ public:
     bool isPressed() const;
 
 private:
-    const unsigned int IDLE_VALUE = 512;
-    const unsigned int DIFF_TRESHOLD = 250;
+    const unsigned int invertedSensitivity;
 
     unsigned int getX() const;
     unsigned int getY() const;
