@@ -78,7 +78,7 @@ void Game::renderState()
 void Game::renderRow(const Line row)
 {
     lcd.start(row);
-    for (size_t i = 0; i < engine.WIDTH; ++i)
+    for (size_t i = 0; i < WIDTH; ++i)
     {
         switch (engine.state[row == FIRST ? 0 : 1][i])
         {

@@ -2,6 +2,9 @@
 #include "Display.hpp"
 #include "Engine.hpp"
 
+#define HEIGHT 2
+#define WIDTH 16
+
 struct Game
 {
 public:
@@ -12,7 +15,7 @@ private:
 
     Joystick joystick;
     Display lcd;
-    Engine engine;
+    Engine<HEIGHT, WIDTH> engine;
 
     void acceptActions();
     void forwardGame();
