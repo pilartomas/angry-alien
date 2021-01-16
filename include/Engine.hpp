@@ -5,6 +5,7 @@ enum class Status
     RUNNING,
     FINISHED
 };
+
 enum class LocationType
 {
     EMPTY,
@@ -12,6 +13,7 @@ enum class LocationType
     SPIKE,
     DEATH
 };
+
 enum class Move
 {
     LEFT,
@@ -78,12 +80,27 @@ public:
         shiftState();
     }
 
-    LocationType state[HEIGHT][WIDTH];
-    Status status;
-    unsigned int score;
+    Status getStatus() const
+    {
+        return status;
+    }
+
+    unsigned int getScore() const
+    {
+        return score;
+    }
+
+    LocationType getState(const size_t y, const size_t x) const
+    {
+        return state[y][x];
+    }
 
 private:
     const unsigned int SPIKE_AVG_FREQENCY = 7;
+
+    Status status;
+    unsigned int score;
+    LocationType state[HEIGHT][WIDTH];
 
     struct Agent
     {

@@ -22,7 +22,7 @@ void Game::acceptActions()
         _delay_ms(ACTION_PAUSE_MILLIS);
         countdown--;
         // joystick can be in many states but we want only one action
-        if (joystick.isPressed() && engine.status != Status::RUNNING)
+        if (joystick.isPressed() && engine.getStatus() != Status::RUNNING)
             engine.reset();
         else if (joystick.isUp())
             engine.action(Move::UP);
@@ -46,7 +46,7 @@ void Game::forwardGame()
 
 void Game::render()
 {
-    switch (engine.status)
+    switch (engine.getStatus())
     {
     case Status::FINISHED:
         showScore();
@@ -63,7 +63,7 @@ void Game::showScore()
     lcd.clear();
     lcd.start(FIRST);
     lcd.print("Score: ");
-    lcd.print(itoa(engine.score, buffer, 10));
+    lcd.print(itoa(engine.getScore(), buffer, 10));
     lcd.start(SECOND);
     lcd.print("Press to restart");
 }
@@ -80,7 +80,7 @@ void Game::renderRow(const Line row)
     lcd.start(row);
     for (size_t i = 0; i < WIDTH; ++i)
     {
-        switch (engine.state[row == FIRST ? 0 : 1][i])
+        switch (engine.getState(row == FIRST ? 0 : 1, i))
         {
         case LocationType::AGENT:
             lcd.write(ALIEN);
