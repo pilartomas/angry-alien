@@ -4,7 +4,7 @@
 
 #define IDLE_VALUE 512
 
-Joystick::Joystick(unsigned int sensitivity) : invertedSensitivity(sensitivity - 250)
+Joystick::Joystick(unsigned int sensitivity) : invertedSensitivity(IDLE_VALUE - sensitivity)
 {
     DDRB &= ~(1 << DDB0);
     ADMUX |= (1 << REFS0);
@@ -35,7 +35,7 @@ bool Joystick::isUp() const
 bool Joystick::isDown() const
 {
     auto y = getY();
-    if (y > IDLE_VALUE)
+    if (y >= IDLE_VALUE)
         return false;
     return IDLE_VALUE - y > invertedSensitivity;
 }

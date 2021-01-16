@@ -9,7 +9,7 @@ enum Image
     DOWNWARD_SPIKE = 1,
     UPWARD_SPIKE = 2,
     SKULL = 3
-};
+}; // values are used as offsets in the display's memory
 
 /*
  * Controls 16x2 LCD HD44780 driven display with 5x8 pixel characters

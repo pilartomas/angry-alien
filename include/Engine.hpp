@@ -42,7 +42,7 @@ public:
                 state[j][i] = LocationType::EMPTY;
             }
         }
-        state[1][0] = LocationType::AGENT;
+        state[HEIGHT / 2][0] = LocationType::AGENT;
     }
 
     void action(Move move)
@@ -54,20 +54,16 @@ public:
         switch (move)
         {
         case Move::LEFT:
-            if (agent.x > 0)
-                moveAgentTo(agent.x - 1, agent.y);
+            moveAgentTo(agent.x - 1, agent.y);
             break;
         case Move::RIGHT:
-            if (agent.x < WIDTH - 1)
-                moveAgentTo(agent.x + 1, agent.y);
+            moveAgentTo(agent.x + 1, agent.y);
             break;
         case Move::UP:
-            if (agent.y > 0)
-                moveAgentTo(agent.x, agent.y - 1);
+            moveAgentTo(agent.x, agent.y - 1);
             break;
         case Move::DOWN:
-            if (agent.y < HEIGHT - 1)
-                moveAgentTo(agent.x, agent.y + 1);
+            moveAgentTo(agent.x, agent.y + 1);
             break;
         }
     }
@@ -127,13 +123,16 @@ private:
 
     void moveAgentTo(size_t x, size_t y)
     {
-        if (state[y][x] == LocationType::EMPTY)
+        if (x > WIDTH || y > HEIGHT) // Can't move out of bounds
+            return;
+
+        if (state[y][x] == LocationType::EMPTY) // Safe move
         {
             auto agent = getAgent();
             state[y][x] = LocationType::AGENT;
             state[agent.y][agent.x] = LocationType::EMPTY;
         }
-        else if (state[y][x] == LocationType::SPIKE)
+        else if (isThreat(state[y][x])) // Unsafe move
             status = Status::FINISHED;
     }
 
