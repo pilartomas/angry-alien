@@ -1,18 +1,18 @@
 #include <stdlib.h>
 
-enum Status
+enum class Status
 {
     RUNNING,
     FINISHED
 };
-enum LocationType
+enum class LocationType
 {
     EMPTY,
     AGENT,
     SPIKE,
     DEATH
 };
-enum Move
+enum class Move
 {
     LEFT,
     RIGHT,
@@ -31,39 +31,39 @@ public:
 
     void reset()
     {
-        status = RUNNING;
+        status = Status::RUNNING;
         score = 0;
         for (size_t j = 0; j < HEIGHT; ++j)
         {
             for (size_t i = 0; i < WIDTH; ++i)
             {
-                state[j][i] = EMPTY;
+                state[j][i] = LocationType::EMPTY;
             }
         }
-        state[1][0] = AGENT;
+        state[1][0] = LocationType::AGENT;
     }
 
     void action(Move move)
     {
-        if (status != RUNNING)
+        if (status != Status::RUNNING)
             return;
 
         auto agent = getAgent();
         switch (move)
         {
-        case LEFT:
+        case Move::LEFT:
             if (agent.x > 0)
                 moveAgentTo(agent.x - 1, agent.y);
             break;
-        case RIGHT:
+        case Move::RIGHT:
             if (agent.x < WIDTH - 1)
                 moveAgentTo(agent.x + 1, agent.y);
             break;
-        case UP:
+        case Move::UP:
             if (agent.y > 0)
                 moveAgentTo(agent.x, agent.y - 1);
             break;
-        case DOWN:
+        case Move::DOWN:
             if (agent.y < HEIGHT - 1)
                 moveAgentTo(agent.x, agent.y + 1);
             break;
@@ -72,7 +72,7 @@ public:
 
     void step()
     {
-        if (status != RUNNING)
+        if (status != Status::RUNNING)
             return;
         score++;
         shiftState();
@@ -98,7 +98,7 @@ private:
         {
             for (size_t i = 0; i < WIDTH; ++i)
             {
-                if (state[j][i] == AGENT)
+                if (state[j][i] == LocationType::AGENT)
                 {
                     agent.x = i;
                     agent.y = j;
@@ -110,23 +110,23 @@ private:
 
     void moveAgentTo(size_t x, size_t y)
     {
-        if (state[y][x] == EMPTY)
+        if (state[y][x] == LocationType::EMPTY)
         {
             auto agent = getAgent();
-            state[y][x] = AGENT;
-            state[agent.y][agent.x] = EMPTY;
+            state[y][x] = LocationType::AGENT;
+            state[agent.y][agent.x] = LocationType::EMPTY;
         }
-        else if (state[y][x] == SPIKE)
-            status = FINISHED;
+        else if (state[y][x] == LocationType::SPIKE)
+            status = Status::FINISHED;
     }
 
     void generateStateTail()
     {
-        state[0][WIDTH - 1] = EMPTY;
-        state[1][WIDTH - 1] = EMPTY;
+        state[0][WIDTH - 1] = LocationType::EMPTY;
+        state[1][WIDTH - 1] = LocationType::EMPTY;
 
         auto r = rand();
-        auto type = r < RAND_MAX / 3 ? DEATH : SPIKE;
+        auto type = r < RAND_MAX / 3 ? LocationType::DEATH : LocationType::SPIKE;
         if (r % SPIKE_AVG_FREQENCY == 0)
         {
             if (r < RAND_MAX / 2 && !isThreat(state[1][WIDTH - 2])) //also make sure it's not a death trap
@@ -154,9 +154,9 @@ private:
     {
         switch (type)
         {
-        case DEATH:
+        case LocationType::DEATH:
             return true;
-        case SPIKE:
+        case LocationType::SPIKE:
             return true;
         default:
             return false;

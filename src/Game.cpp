@@ -22,16 +22,16 @@ void Game::acceptActions()
         _delay_ms(ACTION_PAUSE_MILLIS);
         countdown--;
         // joystick can be in many states but we want only one action
-        if (joystick.isPressed() && engine.status != RUNNING)
+        if (joystick.isPressed() && engine.status != Status::RUNNING)
             engine.reset();
         else if (joystick.isUp())
-            engine.action(UP);
+            engine.action(Move::UP);
         else if (joystick.isDown())
-            engine.action(DOWN);
+            engine.action(Move::DOWN);
         else if (joystick.isLeft())
-            engine.action(LEFT);
+            engine.action(Move::LEFT);
         else if (joystick.isRight())
-            engine.action(RIGHT);
+            engine.action(Move::RIGHT);
         else
             continue;
         render(); // some action have been taken, need to re-render
@@ -48,7 +48,7 @@ void Game::render()
 {
     switch (engine.status)
     {
-    case FINISHED:
+    case Status::FINISHED:
         showScore();
         break;
     default:
@@ -82,19 +82,19 @@ void Game::renderRow(const Line row)
     {
         switch (engine.state[row == FIRST ? 0 : 1][i])
         {
-        case AGENT:
+        case LocationType::AGENT:
             lcd.write(ALIEN);
             break;
-        case SPIKE:
+        case LocationType::SPIKE:
             if (row == FIRST)
                 lcd.write(DOWNWARD_SPIKE);
             else
                 lcd.write(UPWARD_SPIKE);
             break;
-        case DEATH:
+        case LocationType::DEATH:
             lcd.write(SKULL);
             break;
-        case EMPTY:
+        case LocationType::EMPTY:
             lcd.write(' ');
             break;
         }
