@@ -61,32 +61,32 @@ void Game::showScore()
 {
     char buffer[6];
     lcd.clear();
-    lcd.start(FIRST);
+    lcd.start(0);
     lcd.print("Score: ");
     lcd.print(itoa(engine.getScore(), buffer, 10));
-    lcd.start(SECOND);
+    lcd.start(1);
     lcd.print("Press to restart");
 }
 
 void Game::renderState()
 {
     lcd.clear();
-    renderRow(FIRST);
-    renderRow(SECOND);
+    renderRow(0);
+    renderRow(1);
 }
 
-void Game::renderRow(const Line row)
+void Game::renderRow(unsigned int row)
 {
     lcd.start(row);
-    for (size_t i = 0; i < WIDTH; ++i)
+    for (size_t i = 0; i < DISPLAY_WIDTH; ++i)
     {
-        switch (engine.getState(row == FIRST ? 0 : 1, i))
+        switch (engine.getState(row, i))
         {
         case LocationType::AGENT:
             lcd.write(ALIEN);
             break;
         case LocationType::SPIKE:
-            if (row == FIRST)
+            if (row == 0)
                 lcd.write(DOWNWARD_SPIKE);
             else
                 lcd.write(UPWARD_SPIKE);

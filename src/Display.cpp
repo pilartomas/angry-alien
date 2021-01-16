@@ -4,6 +4,53 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
+#define RS (1 << PORTD0)
+#define E (1 << PORTD1)
+
+#define CMD_CLEAR 0x01
+#define CMD_SETDDRAMADDR 0x80
+#define CMD_SETCGRAMADDR 0x40
+
+const uint8_t Alien[8] = {
+    0b11111,
+    0b10101,
+    0b11111,
+    0b11111,
+    0b01110,
+    0b01010,
+    0b11011,
+    0b00000};
+
+const uint8_t Spike[8] = {
+    0b00000,
+    0b00100,
+    0b01110,
+    0b01110,
+    0b11111,
+    0b11111,
+    0b11111,
+    0b11111};
+
+const uint8_t ReverseSpike[8] = {
+    0b11111,
+    0b11111,
+    0b11111,
+    0b11111,
+    0b01110,
+    0b01110,
+    0b00100,
+    0b00000};
+
+const uint8_t Skull[8] = {
+    0b00000,
+    0b01110,
+    0b10101,
+    0b11011,
+    0b01110,
+    0b01110,
+    0b00000,
+    0b00000};
+
 Display::Display()
 {
     DDRD |= 0b11110011; // set pins to output
@@ -27,7 +74,7 @@ Display::Display()
     _delay_us(4500);
     loadImages();
 
-    start(FIRST);
+    start(0);
 }
 
 void Display::loadImages()
@@ -75,9 +122,23 @@ void Display::clear()
     _delay_ms(5); // command needs extra time
 }
 
-void Display::start(Line line)
+enum Line
 {
-    writeCommand(CMD_SETDDRAMADDR | line);
+    FIRST = 0x00,
+    SECOND = 0x40
+}; // values are actual DDRAM addresses of the line
+
+void Display::start(unsigned int line)
+{
+    switch (line)
+    {
+    case 0:
+        writeCommand(CMD_SETDDRAMADDR | Line::FIRST);
+        break;
+    case 1:
+        writeCommand(CMD_SETDDRAMADDR | Line::SECOND);
+        break;
+    }
     _delay_ms(5); // command needs extra time
 }
 

@@ -2,9 +2,6 @@
 #include "Display.hpp"
 #include "Engine.hpp"
 
-#define HEIGHT 2
-#define WIDTH 16
-
 #define JOYSTICK_SENSITIVITY 250
 
 struct Game
@@ -17,7 +14,7 @@ private:
 
     Joystick joystick{JOYSTICK_SENSITIVITY};
     Display lcd;
-    Engine<HEIGHT, WIDTH> engine;
+    Engine<DISPLAY_HEIGHT, DISPLAY_WIDTH> engine;
 
     void acceptActions();
     void forwardGame();
@@ -25,5 +22,5 @@ private:
     void render();
     void showScore();
     void renderState();
-    void renderRow(const Line row);
+    void renderRow(unsigned int row);
 };
