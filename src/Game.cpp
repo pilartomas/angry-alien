@@ -3,20 +3,22 @@
 #include <util/delay.h>
 #include <stdlib.h>
 
-void Game::run()
+Game::Game(unsigned int joystickSensitivity) : joystick(joystickSensitivity) {}
+
+void Game::run(unsigned int stepPeriod)
 {
     while (true)
     {
-        acceptActions();
+        acceptActions(stepPeriod);
         forwardGame();
     }
 }
 
 #define ACTION_PAUSE_MILLIS 100
 
-void Game::acceptActions()
+void Game::acceptActions(unsigned int stepPeriod)
 {
-    auto countdown = INTERVAL_MILLIS / ACTION_PAUSE_MILLIS;
+    auto countdown = stepPeriod / ACTION_PAUSE_MILLIS;
     while (countdown > 0)
     {
         _delay_ms(ACTION_PAUSE_MILLIS);

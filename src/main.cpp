@@ -6,13 +6,9 @@
 #include "Game.hpp"
 
 Game game;
-// Display display;
 
 void setup()
-{
-  // display.write(ALIEN);
-  // display.write(DOWNWARD_SPIKE);
-  // display.write(UPWARD_SPIKE);
+{;
 }
 
 void loop()

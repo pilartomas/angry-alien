@@ -2,7 +2,9 @@
 
 #include <avr/io.h>
 
-Joystick::Joystick(const unsigned int sensitivity) : invertedSensitivity(sensitivity - 250)
+#define IDLE_VALUE 512
+
+Joystick::Joystick(unsigned int sensitivity) : invertedSensitivity(sensitivity - 250)
 {
     DDRB &= ~(1 << DDB0);
     ADMUX |= (1 << REFS0);
