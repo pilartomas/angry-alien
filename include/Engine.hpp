@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+#define MAX_THREAT_LIKELIHOOD RAND_MAX
+
 enum class Status
 {
     RUNNING,
@@ -91,9 +93,9 @@ public:
         return state[y][x];
     }
 
-private:
-    const unsigned int SPIKE_AVG_FREQENCY = 7;
+    unsigned int threatFrequency = MAX_THREAT_LIKELIHOOD / 2;
 
+private:
     Status status;
     unsigned int score;
     LocationType state[HEIGHT][WIDTH];
@@ -136,20 +138,28 @@ private:
             status = Status::FINISHED;
     }
 
-    void generateStateTail()
+    bool canGenerateThreat()
     {
-        state[0][WIDTH - 1] = LocationType::EMPTY;
-        state[1][WIDTH - 1] = LocationType::EMPTY;
-
-        auto r = rand();
-        auto type = r < RAND_MAX / 3 ? LocationType::DEATH : LocationType::SPIKE;
-        if (r % SPIKE_AVG_FREQENCY == 0)
+        for (size_t j = 0; j < HEIGHT; ++j)
         {
-            if (r < RAND_MAX / 2 && !isThreat(state[1][WIDTH - 2])) //also make sure it's not a death trap
-                state[0][WIDTH - 1] = type;
-            else if (!isThreat(state[0][WIDTH - 2]))
-                state[1][WIDTH - 1] = type;
+            auto location = state[j][WIDTH - 2];
+            if (isThreat(location))
+                return false;
         }
+        return true;
+    }
+
+    void tryGenerateThreat()
+    {
+        if (!canGenerateThreat())
+            return;
+
+        auto shouldGenerateThreat = (unsigned int) rand() < threatFrequency;
+        if (!shouldGenerateThreat)
+            return;
+
+        auto threatType = rand() % 3 == 0 ? LocationType::DEATH : LocationType::SPIKE;
+        state[rand() % HEIGHT][WIDTH - 1] = threatType;
     }
 
     void shiftState()
@@ -163,10 +173,13 @@ private:
                 state[j][i] = state[j][i + 1];
             }
         }
-        generateStateTail();
+        state[0][WIDTH - 1] = LocationType::EMPTY;
+        state[1][WIDTH - 1] = LocationType::EMPTY;
+
+        tryGenerateThreat();
     }
 
-    static bool isThreat(const LocationType type)
+    static bool isThreat(LocationType type)
     {
         switch (type)
         {
