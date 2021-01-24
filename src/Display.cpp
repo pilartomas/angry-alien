@@ -86,7 +86,7 @@ Display::Display()
     _delay_us(150);
     writeNibble(0b0010);
     writeCommand(0b00101000);
-    writeCommand(0b00001111);
+    writeCommand(0b00001100);
     writeCommand(0b00000001);
     writeCommand(0b00000110);
 
