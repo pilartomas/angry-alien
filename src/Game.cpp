@@ -7,11 +7,59 @@ Game::Game(unsigned int joystickSensitivity) : joystick(joystickSensitivity) {}
 
 void Game::run(unsigned int stepPeriod)
 {
+    if (!joystick.isPressed())
+        tutorial();
+
     while (true)
     {
         acceptActions(stepPeriod);
         forwardGame();
     }
+}
+
+void Game::tutorial()
+{
+    lcd.clear();
+    lcd.start(0);
+    lcd.write(SKULL);
+    lcd.print(" ANGRY  ALIEN ");
+    lcd.write(SKULL);
+    lcd.start(1);
+    lcd.print("Press to cont...");
+    while (!joystick.isPressed())
+    {
+    }
+    _delay_ms(500);
+
+    lcd.clear();
+    lcd.start(0);
+    lcd.print("Avoid spikes!");
+    lcd.start(1);
+    lcd.print("Press to cont...");
+    while (!joystick.isPressed())
+    {
+    }
+    _delay_ms(500);
+
+    lcd.clear();
+    lcd.start(0);
+    lcd.print("Dodge skulls ...");
+    lcd.start(1);
+    lcd.print("Press to cont...");
+    while (!joystick.isPressed())
+    {
+    }
+    _delay_ms(500);
+
+    lcd.clear();
+    lcd.start(0);
+    lcd.print("Or shoot them!");
+    lcd.start(1);
+    lcd.print("Press to start");
+    while (!joystick.isPressed())
+    {
+    }
+    _delay_ms(500);
 }
 
 #define ACTION_PAUSE_MILLIS 100

@@ -21,6 +21,7 @@ private:
     Display lcd;
     Engine<DISPLAY_HEIGHT, DISPLAY_WIDTH> engine;
 
+    void tutorial();
     void acceptActions(unsigned int stepPeriod);
     void forwardGame();
 
