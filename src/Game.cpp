@@ -24,16 +24,19 @@ void Game::acceptActions(unsigned int stepPeriod)
         _delay_ms(ACTION_PAUSE_MILLIS);
         countdown--;
         // joystick can be in many states but we want only one action
-        if (joystick.isPressed() && engine.getStatus() != Status::RUNNING)
-            engine.reset();
+        if (joystick.isPressed())
+            if (engine.getStatus() == Status::RUNNING)
+                engine.execute(Action::SHOOT);
+            else
+                engine.reset();
         else if (joystick.isUp())
-            engine.action(Move::UP);
+            engine.execute(Action::MOVE_UP);
         else if (joystick.isDown())
-            engine.action(Move::DOWN);
+            engine.execute(Action::MOVE_DOWN);
         else if (joystick.isLeft())
-            engine.action(Move::LEFT);
+            engine.execute(Action::MOVE_LEFT);
         else if (joystick.isRight())
-            engine.action(Move::RIGHT);
+            engine.execute(Action::MOVE_RIGHT);
         else
             continue;
         render(); // some action have been taken, need to re-render
@@ -98,6 +101,12 @@ void Game::renderRow(unsigned int row)
             break;
         case LocationType::EMPTY:
             lcd.write(' ');
+            break;
+        case LocationType::PROJECTILE:
+            lcd.write(BULLET);
+            break;
+        case LocationType::EXPLOSION:
+            lcd.write(EXPLOSION);
             break;
         }
     }

@@ -8,7 +8,9 @@ enum Image
     ALIEN = 0,
     DOWNWARD_SPIKE = 1,
     UPWARD_SPIKE = 2,
-    SKULL = 3
+    SKULL = 3,
+    BULLET = 4,
+    EXPLOSION = 5
 }; // values are used as offsets in the display's memory
 
 /*

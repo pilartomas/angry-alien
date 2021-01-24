@@ -51,6 +51,26 @@ const uint8_t Skull[8] = {
     0b00000,
     0b00000};
 
+const uint8_t Bullet[8] = {
+    0b00000,
+    0b00000,
+    0b11100,
+    0b11111,
+    0b11111,
+    0b11100,
+    0b00000,
+    0b00000};
+
+const uint8_t Explosion[8] = {
+    0b00000,
+    0b10001,
+    0b00100,
+    0b01110,
+    0b00100,
+    0b10001,
+    0b00000,
+    0b00000};
+
 Display::Display()
 {
     DDRD |= 0b11110011; // set pins to output
@@ -83,6 +103,8 @@ void Display::loadImages()
     loadImage(DOWNWARD_SPIKE, ReverseSpike);
     loadImage(UPWARD_SPIKE, Spike);
     loadImage(SKULL, Skull);
+    loadImage(BULLET, Bullet);
+    loadImage(EXPLOSION, Explosion);
 }
 
 void Display::loadImage(const Image image, const uint8_t imageData[])
