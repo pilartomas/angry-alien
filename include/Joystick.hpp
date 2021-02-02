@@ -1,9 +1,9 @@
 /*
  * Controls joystick with horizontal X axis, vertical Y axis and a button
  * 
- * X on pin A0
- * Y on pin A1
- * D on pin 8
+ * X on pin A0 (PORTC0)
+ * Y on pin A1 (PORTC1)
+ * D on pin 8 (PORTB0)
  */
 class Joystick
 {
