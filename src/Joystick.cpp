@@ -2,15 +2,14 @@
 
 #include <avr/io.h>
 
+extern "C" void joystickInitImpl();
+extern "C" int analogReadImpl();
+
 #define IDLE_VALUE 512
 
 Joystick::Joystick(unsigned int sensitivity) : invertedSensitivity(IDLE_VALUE - sensitivity)
 {
-    DDRB &= ~(1 << DDB0);
-
-    ADCSRA |= (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
-    ADMUX |= (1 << REFS0);
-    ADCSRA |= (1 << ADEN);
+    joystickInitImpl();
 }
 
 unsigned int Joystick::getX() const
@@ -65,10 +64,5 @@ bool Joystick::isPressed() const
 
 unsigned int Joystick::analogRead() const
 {
-    ADCSRA |= (1 << ADSC);
-    while (ADCSRA & (1 << ADSC))
-    {
-        // wait for the reading
-    }
-    return ADC;
+    return analogReadImpl();
 }
