@@ -2,16 +2,11 @@
  * Simple game using LCD and Joystick peripherals
  */
 
-#include "Arduino.h"
 #include "Game.hpp"
 
 Game game;
 
-void setup()
-{;
-}
-
-void loop()
+int main()
 {
   game.run();
 }
