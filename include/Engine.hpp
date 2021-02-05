@@ -150,6 +150,7 @@ private:
             break;
         case LocationType::DEATH:
             state[toY][toX] = LocationType::EXPLOSION; // death is killed by the projectile
+            score++;
             break;
         case LocationType::EXPLOSION:
             break; // explosion destroys projectile
